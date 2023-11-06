@@ -12,7 +12,9 @@ async function handleGenerateNewShortURL(req, res) {
     visitedHistory: [],
   });
 
-  return res.json({ id: shortID });
+  return res.render("home", {
+    id: shortID,
+  });
 }
 
 async function handleGetAnalytics(req, res) {
@@ -38,7 +40,12 @@ async function handleRedirect(req, res) {
       },
     }
   );
-  res.redirect(entry.redirectURL);
+
+  if (entry && entry.redirectURL) {
+    res.redirect(entry.redirectURL);
+  } else {
+    res.status(404).send("URL not found");
+  }
 }
 
 module.exports = {
